@@ -2,9 +2,10 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getJobById, Job } from '@/services/jobService';
-import { Button, TextField, Select, MenuItem } from '@mui/material';
+import { Button, TextField, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { updateJob } from '@/services/jobService';
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { StatusOptions } from '@/types/types';
 
 
 const EditRowForm = () => {
@@ -24,7 +25,7 @@ const EditRowForm = () => {
     status: ''
   });
 
-  const statusOptions: any = [
+  const statusOptions: StatusOptions[] = [
     { name: 'pending', display_name: 'Pendiente' },
     { name: 'applied', display_name: 'Aplicado' },
     { name: 'rejected', display_name: 'Rechazado' },
@@ -55,7 +56,7 @@ const EditRowForm = () => {
   const id = params?.id
   if (!id) return false
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -183,7 +184,7 @@ const EditRowForm = () => {
             onChange={handleInputChange}
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:outline-none"
           >
-            {statusOptions.map((option: any) => (
+            {statusOptions.map((option: StatusOptions) => (
               <MenuItem key={option.name} value={option.name}>
                 {option.display_name}
               </MenuItem>

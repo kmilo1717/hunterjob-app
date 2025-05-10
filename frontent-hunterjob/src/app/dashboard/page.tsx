@@ -12,8 +12,8 @@ export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true); // Estado para controlar la carga
 
-  const handleRowClick = (row: any) => {
-    router.push(`/dashboard/${row.id}`);
+  const handleRowClick = (row_id: Number) => {
+    router.push(`/dashboard/${row_id}`);
   };
 
   const statusOptions: { [key: string]: string } = {
@@ -51,7 +51,7 @@ export default function Home() {
     }
   };
 
-  const handleChangePage = (event: any, newPage: number) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -101,7 +101,7 @@ export default function Home() {
               {filteredRows.length ? filteredRows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
-                  <TableRow key={row.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => handleRowClick(row)}>
+                  <TableRow key={row.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => handleRowClick(row.id)}>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.title}</TableCell>
                     <TableCell>{row.company}</TableCell>
