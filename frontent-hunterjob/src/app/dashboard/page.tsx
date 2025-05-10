@@ -12,7 +12,7 @@ export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true); // Estado para controlar la carga
 
-  const handleRowClick = (row_id: Number) => {
+  const handleRowClick = (row_id: number) => {
     router.push(`/dashboard/${row_id}`);
   };
 
