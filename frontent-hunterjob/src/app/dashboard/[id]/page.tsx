@@ -11,7 +11,7 @@ import { StatusOptions } from '@/types/types';
 const EditRowForm = () => {
   const params = useParams()
   const router = useRouter()
-
+  const { id } = params;
   const [formData, setFormData] = useState<Job>({
     id: 0,
     title: '',
@@ -48,13 +48,18 @@ const EditRowForm = () => {
   useEffect(() => {
     if (!params || !params.id) {
       router.push('/');
+      return;
     }
-    fetchJob(Number(params?.id));
 
-  }, [params]);
+    const jobId = Number(params.id);
+    if (isNaN(jobId)) {
+      router.push('/');
+      return;
+    }
 
-  const id = params?.id
-  if (!id) return false
+    fetchJob(jobId);
+
+  }, [params, router]);
 
   const handleInputChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
