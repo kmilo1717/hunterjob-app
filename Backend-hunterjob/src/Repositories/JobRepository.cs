@@ -1,6 +1,7 @@
 using Backend_hunterjob.src.Data;
 using Microsoft.EntityFrameworkCore;
 using Backend_hunterjob.src.Models;
+using Backend_hunterjob.src.Requests;
 
 namespace Backend_hunterjob.src.Repositories;
 
@@ -13,24 +14,24 @@ public class JobRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Job>> GetJobsAsync(int? salary, string? modality, string? status)
+    public async Task<IEnumerable<Job>> GetJobsAsync(SelectDataRequest selectDataRequest)
     {
         var query = _context.Jobs.AsQueryable();
 
-        if (salary.HasValue)
+        if (selectDataRequest.Salary.HasValue)
         {
-            query = query.Where(job => job.SalaryInt == 0 || job.SalaryInt >= salary.Value);
+            query = query.Where(job => job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Salary.Value);
         }
 
-        if (!string.IsNullOrEmpty(modality))
+        if (!string.IsNullOrEmpty(selectDataRequest.Modalities))
         {
-            var modalitiesList = modality.Split(',');
+            var modalitiesList = selectDataRequest.Modalities.Split(',');
             query = query.Where(job => modalitiesList.Contains(job.Modality));
         }
 
-        if (!string.IsNullOrEmpty(status))
+        if (!string.IsNullOrEmpty(selectDataRequest.Status))
         {
-            query = query.Where(job => job.Status == status);
+            query = query.Where(job => job.Status == selectDataRequest.Status);
         }
 
         return await query.ToListAsync();
@@ -40,7 +41,7 @@ public class JobRepository
     {
         return await _context.Jobs.FindAsync(id);
     }
-    
+
 
     public async Task<Job?> GetJobByJobIdAsync(string jobId)
     {

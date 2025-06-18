@@ -1,6 +1,7 @@
 using Backend_hunterjob.src.Services;
 using Microsoft.AspNetCore.Mvc;
 using Backend_hunterjob.src.Models;
+using Backend_hunterjob.src.Requests;
 
 namespace BackendHunterJob.Services;
 
@@ -16,12 +17,9 @@ public class JobController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Job>>> GetAllJobsAsync(
-        [FromQuery] int? salary,
-        [FromQuery] string? modalities,
-        [FromQuery] string? status)
+    public async Task<ActionResult<IEnumerable<Job>>> GetAllJobsAsync([FromQuery] SelectDataRequest selectDataRequest)
     {
-        var jobs = await _jobService.GetAllJobsAsync(salary, modalities, status);
+        var jobs = await _jobService.GetAllJobsAsync(selectDataRequest);
         return Ok(jobs);
     }
 

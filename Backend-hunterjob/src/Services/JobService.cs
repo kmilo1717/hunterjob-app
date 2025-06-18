@@ -1,5 +1,6 @@
 using Backend_hunterjob.src.Models;
 using Backend_hunterjob.src.Repositories;
+using Backend_hunterjob.src.Requests;
 
 namespace Backend_hunterjob.src.Services;
 public class JobService
@@ -11,9 +12,9 @@ public class JobService
         _jobRepository = jobRepository;
     }
 
-    public async Task<IEnumerable<Job>> GetAllJobsAsync(int? salary, string? modalities, string? status)
+    public async Task<IEnumerable<Job>> GetAllJobsAsync(SelectDataRequest selectDataRequest)
     {
-        return await _jobRepository.GetJobsAsync(salary, modalities, status);
+        return await _jobRepository.GetJobsAsync(selectDataRequest);
     }
 
     public async Task<Job> CreateJobAsync(Job job)
@@ -32,7 +33,7 @@ public class JobService
         await _jobRepository.UpdateJobAsync(job);
     }
 
-        public async Task<Job?> GetJobByJobIdAsync(string jobId)
+    public async Task<Job?> GetJobByJobIdAsync(string jobId)
     {
         return await _jobRepository.GetJobByJobIdAsync(jobId);
     }
