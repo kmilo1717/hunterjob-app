@@ -1,4 +1,4 @@
-using Backend_hunterjob.src.Data;
+﻿using Backend_hunterjob.src.Data;
 using Microsoft.EntityFrameworkCore;
 using Backend_hunterjob.src.Models;
 using Backend_hunterjob.src.Requests;
@@ -14,29 +14,31 @@ public class JobRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Job>> GetJobsAsync(SelectDataRequest selectDataRequest)
+    public async Task<List<Job>> GetJobsAsync(SelectDataRequest selectDataRequest)
     {
         var query = _context.Jobs.AsQueryable();
-
-        if (selectDataRequest.Salary.HasValue)
-        {
-            query = query.Where(job => job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Salary.Value);
-        }
-
-        if (!string.IsNullOrEmpty(selectDataRequest.Modalities))
-        {
-            var modalitiesList = selectDataRequest.Modalities.Split(',');
-            query = query.Where(job => modalitiesList.Contains(job.Modality));
-        }
+        query = query.Where(job =>
+            (selectDataRequest.Remote != null &&
+             job.Modality == "Remoto" &&
+             (job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Remote))
+            ||
+            (selectDataRequest.Onsite != null &&
+             job.Modality == "Presencial" &&
+             (job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Onsite))
+            ||
+            (selectDataRequest.Hybrid != null &&
+             job.Modality == "Presencial y remoto" &&
+             (job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Hybrid))
+             || (selectDataRequest.Remote == null && selectDataRequest.Onsite == null && selectDataRequest.Hybrid == null));
 
         if (!string.IsNullOrEmpty(selectDataRequest.Status))
         {
             query = query.Where(job => job.Status == selectDataRequest.Status);
         }
 
+        // Execute the query
         return await query.ToListAsync();
     }
-
     public async Task<Job?> GetJobByIdAsync(int id)
     {
         return await _context.Jobs.FindAsync(id);

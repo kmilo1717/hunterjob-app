@@ -12,7 +12,7 @@ public class JobService
         _jobRepository = jobRepository;
     }
 
-    public async Task<IEnumerable<Job>> GetAllJobsAsync(SelectDataRequest selectDataRequest)
+    public async Task<List<Job>> GetAllJobsAsync(SelectDataRequest selectDataRequest)
     {
         return await _jobRepository.GetJobsAsync(selectDataRequest);
     }
