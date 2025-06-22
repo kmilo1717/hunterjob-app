@@ -23,8 +23,8 @@ public class JobRepository
              (job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Remote))
             ||
             (selectDataRequest.Onsite != null &&
-             job.Modality == "Presencial" &&
-             (job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Onsite))
+             job.Modality == null &&
+             job.SalaryInt >= selectDataRequest.Onsite)
             ||
             (selectDataRequest.Hybrid != null &&
              job.Modality == "Presencial y remoto" &&
