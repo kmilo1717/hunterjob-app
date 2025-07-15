@@ -7,5 +7,6 @@ public class SelectDataRequest
     public int? Hybrid { get; set; }
     public int? Remote { get; set; }
     public int? Onsite { get; set; }
+    public string? Schedules { get; set; }
 
 }

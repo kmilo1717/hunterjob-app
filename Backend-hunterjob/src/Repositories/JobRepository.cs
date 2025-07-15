@@ -31,6 +31,12 @@ public class JobRepository
              (job.SalaryInt == 0 || job.SalaryInt >= selectDataRequest.Hybrid))
              || (selectDataRequest.Remote == null && selectDataRequest.Onsite == null && selectDataRequest.Hybrid == null));
 
+        if (!string.IsNullOrEmpty(selectDataRequest.Schedules))
+        {
+            String[] selectedSchedules = selectDataRequest.Schedules.Split(",");
+            query = query.Where(job => selectedSchedules.Contains(job.Schedule));
+        }
+
         if (!string.IsNullOrEmpty(selectDataRequest.Status))
         {
             query = query.Where(job => job.Status == selectDataRequest.Status);
